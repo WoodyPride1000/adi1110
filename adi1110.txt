@@ -30,3 +30,52 @@ drivers/spi/spidev.h や関連する構造体の定義で priv->spidev や priv-
 一般的には、chip_selectはunsigned intまたはそれより小さい整数型であることが多いので、解決策1の(unsigned int)priv->spidev->chip_selectで警告は解消される可能性が高いです。
 
 この警告は「エラー」ではなく「警告」なので、コンパイルは通るかもしれませんが、正しい値を表示しなかったり、将来的な問題を引き起こす可能性があるので、修正することをお勧めします。
+
+
+警告の解決: format ‘%u’ expects argument of type ‘unsigned int’, but argument 5 has type ‘u8 *’
+
+これは以前にも説明した通り、snprintf関数で型が合っていないために出ています。
+
+解決策:
+
+adin1110.cファイルの559行目を以下のように修正してください。
+
+C
+// 修正前
+snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
+         priv->cfg->name, priv->spidev->chip_select);
+
+// 修正後
+snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
+         priv->cfg->name, (unsigned int)priv->spidev->chip_select);
+priv->spidev->chip_selectを(unsigned int)にキャストすることで、%uフォーマット指定子に期待される型と一致させ、警告を解消できます。chip_selectはSPIデバイスのチップ選択番号を示す整数値なので、この修正で問題ありません。
+
+エラーの解決: ‘NETIF_F_NETNS_LOCAL’ undeclared
+
+これは、NETIF_F_NETNS_LOCALというマクロが現在のLinuxカーネルヘッダーファイルで定義されていない、または利用できなくなっていることを示しています。これは、カーネルのバージョンアップに伴ってAPIが変更された結果としてよく起こります。
+
+NETIF_F_NETNS_LOCALは、ネットワークデバイスが特定のネットワーク名前空間にローカルであることを示すフラグですが、近年ではこのフラグが使われなくなり、別の方法で管理されるようになっています。お使いのカーネルバージョン6.12.25+rpt-rpi-v8では、このフラグは削除されている可能性が高いです。
+
+解決策:
+
+adin1110.cファイルの1173行目にある、この定義されていないフラグを使用している行をコメントアウトするか削除してください。
+
+C
+// 修正前
+netdev->features |= NETIF_F_NETNS_LOCAL;
+
+// 修正後 (この行を削除するかコメントアウト)
+// netdev->features |= NETIF_F_NETNS_LOCAL;
+この行を削除しても、ADIN1110ドライバーの基本的な機能に影響はないはずです。カーネル側でこのフラグの管理方法が変わっているため、ドライバー側で設定する必要がなくなったと考えられます。
+
+まとめと次のステップ
+
+adin1110.cファイルを開く。
+559行目を修正する。 priv->spidev->chip_selectを(unsigned int)にキャストする。
+1173行目を修正する。 netdev->features |= NETIF_F_NETNS_LOCAL;の行をコメントアウトまたは削除する。
+ファイルを保存する。
+再度makeコマンドを実行する。
+Bash
+make -C /lib/modules/6.12.25+rpt-rpi-v8/build M=/home/t1ladmin/spehat_driver modules
+ これらの修正でビルドが成功するはずです。もし別のエラーが出た場合は、またそのエラーメッセージを教えてください。
+
