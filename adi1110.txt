@@ -79,3 +79,100 @@ Bash
 make -C /lib/modules/6.12.25+rpt-rpi-v8/build M=/home/t1ladmin/spehat_driver modules
  これらの修正でビルドが成功するはずです。もし別のエラーが出た場合は、またそのエラーメッセージを教えてください。
 
+
+
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Sat Jun 14 14:39:52 2025
+t1ladmin@t1l:~ $ cd spehat_driver
+t1ladmin@t1l:~/spehat_driver $ make
+make -C /lib/modules/6.12.25+rpt-rpi-v8/build M=/home/t1ladmin/spehat_driver modules
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' に入ります
+  CC [M]  /home/t1ladmin/spehat_driver/adin1110.o
+/home/t1ladmin/spehat_driver/adin1110.c: In function ‘adin1110_register_mdiobus’:
+/home/t1ladmin/spehat_driver/adin1110.c:559:60: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 5 has type ‘u8 *’ {aka ‘unsigned char *’} [-Wformat=]
+  559 |         snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
+      |                                                           ~^
+      |                                                            |
+      |                                                            unsigned int
+      |                                                           %hhn
+  560 |                  priv->cfg->name, priv->spidev->chip_select);
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~ 
+      |                                               |
+      |                                               u8 * {aka unsigned char *}
+/home/t1ladmin/spehat_driver/adin1110.c: In function ‘adin1110_probe_netdevs’:
+/home/t1ladmin/spehat_driver/adin1110.c:1173:37: error: ‘NETIF_F_NETNS_LOCAL’ undeclared (first use in this function)
+ 1173 |                 netdev->features |= NETIF_F_NETNS_LOCAL;
+      |                                     ^~~~~~~~~~~~~~~~~~~
+/home/t1ladmin/spehat_driver/adin1110.c:1173:37: note: each undeclared identifier is reported only once for each function it appears in
+make[3]: *** [/usr/src/linux-headers-6.12.25+rpt-common-rpi/scripts/Makefile.build:249: /home/t1ladmin/spehat_driver/adin1110.o] エラー 1
+make[2]: *** [/usr/src/linux-headers-6.12.25+rpt-common-rpi/Makefile:1974: /home/t1ladmin/spehat_driver] エラー 2
+make[1]: *** [/usr/src/linux-headers-6.12.25+rpt-common-rpi/Makefile:236: __sub-make] エラー 2
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' から出ます
+make: *** [Makefile:9: all] エラー 2
+t1ladmin@t1l:~/spehat_driver $ make
+make -C /lib/modules/6.12.25+rpt-rpi-v8/build M=/home/t1ladmin/spehat_driver modules
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' に入ります
+  CC [M]  /home/t1ladmin/spehat_driver/adin1110.o
+/home/t1ladmin/spehat_driver/adin1110.c: In function ‘adin1110_register_mdiobus’:
+/home/t1ladmin/spehat_driver/adin1110.c:559:60: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 5 has type ‘u8 *’ {aka ‘unsigned char *’} [-Wformat=]
+  559 |         snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
+      |                                                           ~^
+      |                                                            |
+      |                                                            unsigned int
+      |                                                           %hhn
+  560 |                  priv->cfg->name, priv->spidev->chip_select);
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~ 
+      |                                               |
+      |                                               u8 * {aka unsigned char *}
+/home/t1ladmin/spehat_driver/adin1110.c: In function ‘adin1110_probe_netdevs’:
+/home/t1ladmin/spehat_driver/adin1110.c:1173:37: error: ‘NETIF_F_NETNS_LOCAL’ undeclared (first use in this function)
+ 1173 |                 netdev->features |= NETIF_F_NETNS_LOCAL;
+      |                                     ^~~~~~~~~~~~~~~~~~~
+/home/t1ladmin/spehat_driver/adin1110.c:1173:37: note: each undeclared identifier is reported only once for each function it appears in
+make[3]: *** [/usr/src/linux-headers-6.12.25+rpt-common-rpi/scripts/Makefile.build:249: /home/t1ladmin/spehat_driver/adin1110.o] エラー 1
+make[2]: *** [/usr/src/linux-headers-6.12.25+rpt-common-rpi/Makefile:1974: /home/t1ladmin/spehat_driver] エラー 2
+make[1]: *** [/usr/src/linux-headers-6.12.25+rpt-common-rpi/Makefile:236: __sub-make] エラー 2
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' から出ます
+make: *** [Makefile:9: all] エラー 2
+t1ladmin@t1l:~/spehat_driver $ make
+make -C /lib/modules/6.12.25+rpt-rpi-v8/build M=/home/t1ladmin/spehat_driver modules
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' に入ります
+  CC [M]  /home/t1ladmin/spehat_driver/adin1110.o
+/home/t1ladmin/spehat_driver/adin1110.c: In function ‘adin1110_register_mdiobus’:
+/home/t1ladmin/spehat_driver/adin1110.c:561:27: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  561 |          priv->cfg->name, (unsigned int)priv->spidev->chip_select);
+      |                           ^
+  MODPOST /home/t1ladmin/spehat_driver/Module.symvers
+  CC [M]  /home/t1ladmin/spehat_driver/adin1110.mod.o
+  CC [M]  /home/t1ladmin/spehat_driver/.module-common.o
+  LD [M]  /home/t1ladmin/spehat_driver/adin1110.ko
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' から出ます
+t1ladmin@t1l:~/spehat_driver $ make
+make -C /lib/modules/6.12.25+rpt-rpi-v8/build M=/home/t1ladmin/spehat_driver modules
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' に入ります
+  CC [M]  /home/t1ladmin/spehat_driver/adin1110.o
+  MODPOST /home/t1ladmin/spehat_driver/Module.symvers
+  CC [M]  /home/t1ladmin/spehat_driver/adin1110.mod.o
+  LD [M]  /home/t1ladmin/spehat_driver/adin1110.ko
+make[1]: ディレクトリ '/usr/src/linux-headers-6.12.25+rpt-rpi-v8' から出ます
+t1ladmin@t1l:~/spehat_driver $ sudo cp adin1110.ko /lib/modules/$(uname -r)/kernel/drivers/net
+t1ladmin@t1l:~/spehat_driver $ sudo depmod -a
+t1ladmin@t1l:~/spehat_driver $ dtc -@ -I dts -O dtb -o adin1110.dtbo dts/bcm2835_adin1110.dtso
+t1ladmin@t1l:~/spehat_driver $ sudo cp adin1110.dtbo /boot/overlays
+t1ladmin@t1l:~/spehat_driver $ sudo nano /boot/firmware/config.txt
+t1ladmin@t1l:~/spehat_driver $ sudo raspi-config
+Interface Options -> SPI
+-bash: Interface: コマンドが見つかりません
+t1ladmin@t1l:~/spehat_driver $ sudo nano /etc/systemd/network/00-spe-hat-mac.link
+t1ladmin@t1l:~/spehat_driver $ sudo reboot
+
+Broadcast message from root@t1l on pts/4 (Sun 2025-06-15 11:11:41 JST):
+
+The system will reboot now!
+
